@@ -1,11 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <title>meme-generator</title>
 </head>
-<body>
-    <h1>hello world</h1>
+
+<body onload="onInit()">
+    <header class="main-header flex ">
+        <div class="nav-container flex align-center space-between">
+            <div class="logo">
+                <span class="first-letter">M</span><span>eme</span>
+                <span class="first-letter">G</span><span>enerator</span>
+                <span class="point-letter">.</span>
+            </div>
+            <ul class="main-nav flex space-between clean-list">
+                <li><a href="#">Gallery</a></li>
+                <li><a href="#">Mems</a></li>
+                <li><a href="#">About</a></li>
+            </ul>
+        </div>
+    </header>
+    <main class="main-content flex justify-center">
+        <div class="canvas-page container flex justify-center">
+            
+
+
+
+        </div>
+        <!-- <div class="gallery container flex justify-center flex-column">
+        <div class="top-line flex align-center justify-center">
+            <input id="search" class="search flex-grow" type="text" placeholder="search">
+            <div class="keyWords flex-grow flex justify-center align-center">
+                <span>funny &nbsp; </span>
+                <span>animal &nbsp; </span>
+                <span>men &nbsp; </span>
+                <span>woman &nbsp; </span>
+                <span>baby &nbsp; </span>
+            </div>
+        </div>
+        <div class="photo-contianer grid">
+            <div class="photo-gallery grid grid-container">
+                
+
+            </div>
+        </div>
+    </div> -->
+    </main>
+    <script src="js/meme-util-service.js"></script>
+    <script src="js/meme-controller.js"></script>
+    <script src="js/meme-server.js"></script>
+    <script src="js/meme-local-storage.js"></script>
 </body>
+
 </html>
+
+<!-- onkeyup="onSearch()"
+ onclick="setFillterdByClick('funny')" -->
