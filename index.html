@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/main.css">
+    <script src="https://kit.fontawesome.com/ce3f5fb62e.js" crossorigin="anonymous"></script>
     <title>meme-generator</title>
 </head>
 
@@ -24,34 +25,127 @@
         </div>
     </header>
     <main class="main-content flex justify-center">
-        <div class="canvas-page container flex justify-center">
-            
+        <div class="gallery container flex justify-center flex-column">
+            <div class="top-line flex align-center justify-center">
+                <input id="search" class="search flex-grow" type="text" placeholder="search">
+                <div class="keyWords flex-grow flex justify-center align-center">
+                    <span>funny &nbsp; </span>
+                    <span>animal &nbsp; </span>
+                    <span>men &nbsp; </span>
+                    <span>woman &nbsp; </span>
+                    <span>baby &nbsp; </span>
+                </div>
+            </div>
+            <div class="photo-contianer grid">
+                <div class="photo-gallery grid grid-container">
 
 
-
-        </div>
-        <!-- <div class="gallery container flex justify-center flex-column">
-        <div class="top-line flex align-center justify-center">
-            <input id="search" class="search flex-grow" type="text" placeholder="search">
-            <div class="keyWords flex-grow flex justify-center align-center">
-                <span>funny &nbsp; </span>
-                <span>animal &nbsp; </span>
-                <span>men &nbsp; </span>
-                <span>woman &nbsp; </span>
-                <span>baby &nbsp; </span>
+                </div>
             </div>
         </div>
-        <div class="photo-contianer grid">
-            <div class="photo-gallery grid grid-container">
-                
 
+
+
+        <div class="canvas-page container justify-center">
+            <!-- to add wrap -->
+            <div class="flex align-center justify-center">
+                <div class="img-container flex">
+                    <div class="canvas-container flex justify-center align-items">
+                        <canvas id="my-canvas" height="400" width="400" onclick="draw(event)"></canvas>
+                    </div>
+                </div>
+                <div class="tools-container flex flex-column align-center justify-center wrap">
+                    <input type="text" id="text" class="txt-input" placeholder="what on your mind?"
+                        onkeyup="onChangeText(this.value)">
+                    <div class="main-btn-container flex align-center justify-center wrap">
+                        <button class="up-btn" onclick="onChangeLineLocation(-10)">
+                            <i class="fas fa-arrow-up fa-lg"></i>
+                        </button>
+                        <button class="down-btn" onclick="onChangeLineLocation(10)">
+                            <i class="fas fa-arrow-down fa-lg"></i>
+                        </button>
+                        <button class="switch-btn" onclick="onSwitchText()">
+                            <i class="fas fa-arrows-alt-v fa-lg" aria-hidden="true"></i>
+                        </button>
+                        <button class="add-btn" onclick="onAddText()">
+                            <i class="fa fa-plus fa-lg" aria-hidden="true"></i>
+                        </button>
+                        <button class="delete-btn fa-lg" onclick="onDelete()">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="editor-btn-container flex justify-center align-center flex-column">
+                        <div class="first-editor flex justify-center align-center">
+                            <button class="increase" onclick="onChangeFontSize(1)">
+                                <i class="fas fa-sort-numeric-up fa-lg"></i>
+                            </button>
+                            <button class="decrease" onclick="onChangeFontSize(-1)">
+                                <i class="fas fa-sort-numeric-down fa-lg"></i>
+                            </button>
+                            <button class="text-align-left" onclick="onChangeAlign('right')">
+                                <i class="fas fa-align-left fa-lg"></i>
+                            </button>
+                            <button class="text-align-center" onclick="onChangeAlign('center')">
+                                <i class="fas fa-align-justify fa-lg"></i>
+                            </button>
+                            <button class="text-align-right" onclick="onChangeAlign('left')">
+                                <i class="fas fa-align-right fa-lg"></i>
+                            </button>
+                        </div>
+                        <select id="font-famely-list" class="font-list" onchange="onChangeFontFamely()">
+                            <option value="Impact">Impact</option>
+                            <option value="eurofurence">Euro Furence</option>
+                            <option value="Lato">Lato</option>
+                        </select>
+                        <div class="colors-plate flex align-center justify-center">
+                            <button class="delete-border" onclick="onDeleteBorder()">
+                                <i class="fas fa-strikethrough fa-lg"></i>
+                            </button>
+
+                            <input type="color" class="text-color" value="#ffffff" id="color"
+                                onchange="onChangeColor(this.value)" hidden>
+                            <button class="fas fa-palette fa-lg" onclick="onShowColorChange('text-color')"></button>
+
+                            <input type="color" class="border-color" value="#ffffff" id="border-color"
+                                onchange="onChangeBorderColor(this.value)" hidden>
+                            <button class="fas fa-eye-dropper fa-lg"
+                                onclick="onShowColorChange('border-color')"></button>
+
+
+
+                            <!-- <button><label for="border-color" class="border-color"></label>
+                        </button> -->
+
+
+                            <!-- <input type="color" class="border-color" id="border-color" onchange="onChangeStrokeColor()"> -->
+                        </div>
+                    </div>
+                    <div class="emoji-container flex justify-center align-center">
+                        <!-- <img class="arrow-btn left" src="./img/buttons/left-btn.png" alt="" onclick="onChangeIndexSticker(-1)">
+                        <img class="arrow-btn right" src="./img/buttons/right-btn.png" alt="" onclick="onChangeIndexSticker(1)">
+                        <img class="stricker" src="img/gilad.webp" alt="WebP rules." onclick="onSelectedSticker(1)">
+                        <img class="stricker" src="img/turtule.webp" alt="WebP rules." onclick="onSelectedSticker(2)">
+                        <img class="stricker" src="img/supreme.webp" alt="WebP rules." onclick="onSelectedSticker(3)">
+                        <img class="stricker" src="img/louis.webp" alt="WebP rules." onclick="onSelectedSticker(4)"> -->
+                    </div>
+                    <div class="bottom-btn-container flex wrap justify-center">
+                        <form class="share flex justify-center align-center" action="" method="POST"
+                            enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
+                            <input name="img" id="imgData" type="hidden">
+                            <!-- <button class="btn-share" type="submit" onclick="onPublish(event)">Publish</button>
+                        <div class="share-container"></div> -->
+                        </form>
+                        <a class="download flex justify-center align-center " href="#" onclick="onDownload(this)"
+                            download="">Download</a>
+                        <button class="save-btn" onclick="onSaveCanvas()">Save</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div> -->
     </main>
     <script src="js/meme-util-service.js"></script>
     <script src="js/meme-controller.js"></script>
-    <script src="js/meme-server.js"></script>
+    <script src="js/meme-service.js"></script>
     <script src="js/meme-local-storage.js"></script>
 </body>
 
