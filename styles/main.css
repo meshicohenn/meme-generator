@@ -11,6 +11,10 @@ html{
     background-color: #292929;
 }
 
+img {
+    width: 100%;
+}
+
 @font-face{
     font-family: eurofurence;
     src:url(../fonts/eurofurence/eurof35.woff);
