@@ -225,7 +225,7 @@ a{
 }
 
 .editor-btn-container{
-    width: 26rem;
+    width: 90%;
     height: 10rem;
     border-radius: 15px;
     /* background-image: linear-gradient(-38deg, #f9bccc 0%, #b88bda 50%, #4c39ef 100%); */
@@ -330,12 +330,15 @@ select{
 }
 
 
-@media (max-width: 910px){
+@media (max-width: 660px){
     .canvas-and-img-container{
         flex-wrap: wrap;
     }
     .main-nav{
         flex-wrap: wrap;
+    }
+    .tools-container{
+        width: 400px;
     }
 
 }
