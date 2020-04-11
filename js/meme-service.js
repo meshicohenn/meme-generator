@@ -9,10 +9,12 @@ var gKeywords = {
 
 var gImgs = Array(SIZE).fill({});
 
+var gIsDownload = false;
 var gMeme = {};
 var gCtx;
 var gCanvas;
 var gCurrentUrl;
+var gMemsToStorage;
 
 var gCurrentLineIdx = -1;
 
@@ -20,6 +22,11 @@ function createCanvas() {
     gCanvas = document.querySelector('#my-canvas');
     gCtx = gCanvas.getContext('2d');
     resizeCanvas();
+}
+
+function clearMark() {
+    gIsDownload = true;
+    drawImg();
 }
 
 function drawImg() {
@@ -32,7 +39,7 @@ function drawImg() {
         gMeme.lines.forEach((line) => {
             drawText(line);
         });
-        strokeFrameText();
+        if (!gIsDownload) strokeFrameText();
     }
 }
 
@@ -48,7 +55,7 @@ function setGlobalUrl(id) {
 function createGallery() {
     var imgs = getImgs();
     imgs = imgs.map((img, idx) => {
-        return img = createImg(idx, '/img/' + ++idx + '.jpg', 'popo');
+        return img = createImg(idx, 'img/' + ++idx + '.jpg', 'popo');
     });
     gImgs = imgs;
 
@@ -70,23 +77,24 @@ function createMeme(imgId) {
         lines: [{
             txt: '', size: 16, align: 'left', color: 'white',
             bordercolor: 'black', font: 'Impact', border: 2,
-            offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 4
+            offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 8
         }]
     };
 }
 
 function addLine() {
 
-    if (gMeme.lines.length === 2) {
-        return console.log('cant add more lines :(');
-    }
+    if (gMeme.lines.length + 1 > 8) return console.log('cannoe add more lines');
+    // debugger
+    gMeme.selectedLineIdx++;
 
     gMeme.lines.push({
         txt: '', size: 16, align: 'left', color: 'white',
         bordercolor: 'black', font: 'Impact', border: 2,
-        offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 1.2
+        offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 8 * (gMeme.selectedLineIdx + 1)
     })
-    gMeme.selectedLineIdx++;
+    console.log('gMeme.selectedLineIdx', gMeme.selectedLineIdx, gCanvas.height / 8 *  gMeme.selectedLineIdx + 1);
+
 }
 
 function ChangeFontSize(diff) {
@@ -102,7 +110,7 @@ function changeText(text) {
     //T.D add modal alert
     var line = getDetailsLine();
 
-    if (validateLimitsOfCanvas(line)) {
+    if (validateLimitsOfCanvas(text)) {
         return console.log('cannot changing text');
     }
     line.txt = text;
@@ -126,6 +134,7 @@ function switchLines() {
     if (lineIdx > gMeme.lines.length - 1) {
         return gMeme.selectedLineIdx = 0;
     }
+    // if()
     gMeme.selectedLineIdx++;
 }
 
@@ -173,13 +182,12 @@ function changeLineLocation(diff) {
     line.offsetY += diff;
 }
 
-function clearCanvas() {
-    // gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height)
-    gMeme.lines = [{
-        txt: '', size: 16, align: 'left', color: 'white',
-        bordercolor: 'black', font: 'Impact', border: 2,
-        offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 4
-    }];
+function deleteLineCanvas() {
+    // debugger
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1);
+    if (gMeme.selectedLineIdx + 1 > gMeme.lines.length - 1) {
+        return gMeme.selectedLineIdx = 0;
+    }
 }
 
 function drawText(line) {
@@ -216,13 +224,34 @@ function strokeFrameText() {
 
 }
 
-function validateLimitsOfCanvas() {
+function validateLimitsOfCanvas(text) {
+    var txt;
     var line = getDetailsLine();
+    // if(!line) return;
+    (text) ? txt = text : txt = line.txt;
     var x = line.offsetX;
-    var y = line.offsetY;
-    if (x + gCtx.measureText(line.txt).width > gCanvas.width) {
+    if (x + gCtx.measureText(txt).width - 5 > gCanvas.width) {
         console.log('your text is too long');
         return true;
     }
     return false;
 }
+
+function downloadImg(elLink) {
+    var imgContent = gCanvas.toDataURL('image/jpeg');
+    console.log(imgContent)
+
+    elLink.href = imgContent
+    gIsDownload=true;
+    drawImg();
+}
+
+function serviceSaveToStorage(){
+    var imgContent = gCanvas.toDataURL('image/jpeg');
+    // debugger
+    var loadMemsFromStorage = loadFromStorage('mems');
+    if(!loadMemsFromStorage) loadMemsFromStorage = [];
+    loadMemsFromStorage.push(imgContent);
+    saveToStorage('mems',loadMemsFromStorage);
+}
+

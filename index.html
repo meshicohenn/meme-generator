@@ -18,8 +18,8 @@
                 <span class="point-letter">.</span>
             </div>
             <ul class="main-nav flex space-between clean-list">
-                <li><a href="#">Gallery</a></li>
-                <li><a href="#">Mems</a></li>
+                <li><a href="index.html">Gallery</a></li>
+                <li><a href="my-mems.html">Mems</a></li>
                 <li><a href="#">About</a></li>
             </ul>
         </div>
@@ -28,13 +28,13 @@
         <div class="gallery container flex justify-center flex-column">
             <div class="top-line flex align-center justify-center">
                 <input id="search" class="search flex-grow" type="text" placeholder="search">
-                <div class="keyWords flex-grow flex justify-center align-center">
+                <!-- <div class="keyWords flex-grow flex justify-center align-center">
                     <span>funny &nbsp; </span>
                     <span>animal &nbsp; </span>
                     <span>men &nbsp; </span>
                     <span>woman &nbsp; </span>
                     <span>baby &nbsp; </span>
-                </div>
+                </div> -->
             </div>
             <div class="photo-contianer grid">
                 <div class="photo-gallery grid grid-container">
@@ -48,7 +48,7 @@
 
         <div class="canvas-page container justify-center">
             <!-- to add wrap -->
-            <div class="flex align-center justify-center">
+            <div class="canvas-and-img-container flex align-center justify-center">
                 <div class="img-container flex">
                     <div class="canvas-container flex justify-center align-items">
                         <canvas id="my-canvas" height="400" width="400" onclick="draw(event)"></canvas>
@@ -98,9 +98,9 @@
                             <option value="Lato">Lato</option>
                         </select>
                         <div class="colors-plate flex align-center justify-center">
-                            <button class="delete-border" onclick="onDeleteBorder()">
+                            <!-- <button class="delete-border" onclick="onDeleteBorder()">
                                 <i class="fas fa-strikethrough fa-lg"></i>
-                            </button>
+                            </button> -->
 
                             <input type="color" class="text-color" value="#ffffff" id="color"
                                 onchange="onChangeColor(this.value)" hidden>
@@ -134,9 +134,9 @@
                             <input name="img" id="imgData" type="hidden">
                             <!-- <button class="btn-share" type="submit" onclick="onPublish(event)">Publish</button>
                         <div class="share-container"></div> -->
+                            <a class="download flex justify-center align-center " href="#" onmousedown="clearMark()" onmouseup="onDownload(this)"
+                                download="my-img.jpg">Download</a>
                         </form>
-                        <a class="download flex justify-center align-center " href="#" onclick="onDownload(this)"
-                            download="">Download</a>
                         <button class="save-btn" onclick="onSaveCanvas()">Save</button>
                     </div>
                 </div>

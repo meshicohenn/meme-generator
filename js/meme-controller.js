@@ -27,6 +27,7 @@ function renderCanvasPage() {
 
 function renderCanvasText() {
     if(validateLimitsOfCanvas()) return;
+
     drawImg();
 }
 
@@ -59,11 +60,14 @@ function onAddText() {
 }
 
 function onChangeText(text) {
+
     changeText(text);
+
     renderCanvasText();
 }
 
 function onChangeFontSize(diff) {
+    // if(validateLimitsOfCanvas()) return;
     ChangeFontSize(diff);
     renderCanvasText();
 }
@@ -98,6 +102,19 @@ function onSwitchText(){
 }
 
 function onDelete(){
-    clearCanvas();
+    deleteLineCanvas();
     renderCanvasText();
+}
+
+function onDownload(elImg){
+    downloadImg(elImg);
+}
+
+function onSaveCanvas(){
+    serviceSaveToStorage();
+}
+
+function backToGallery(){
+    document.querySelector('.canvas-page').style.display = 'none';
+    onInit();
 }

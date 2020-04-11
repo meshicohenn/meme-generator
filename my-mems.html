@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/main.css">
+    <title>my-mems</title>
+</head>
+
+<body>
+
+    <body onload="onInitMyMems()">
+        <header class="main-header flex ">
+            <div class="nav-container flex align-center space-between">
+                <div class="logo">
+                    <span class="first-letter">M</span><span>eme</span>
+                    <span class="first-letter">G</span><span>enerator</span>
+                    <span class="point-letter">.</span>
+                </div>
+                <ul class="main-nav flex space-between clean-list">
+                    <li><a href="index.html">Gallery</a></li>
+                    <li><a href="my-mems.html">Mems</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+        </header>
+        <main class="main-content flex justify-center">
+            <div class="gallery container flex justify-center flex-column">
+                <div class="img-container grid grid-container">
+
+                </div>
+            </div>
+        </main>
+
+        <script src="js/my-mems-controller.js"></script>
+        <script src="js/meme-service.js"></script>
+        <script src="js/meme-local-storage.js"></script>
+    </body>
+
+</html>
