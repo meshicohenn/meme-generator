@@ -20,7 +20,7 @@ var gCurrentLineIdx = -1;
 
 function createCanvas() {
     gCanvas = document.querySelector('#my-canvas');
-    checkScreenSize();
+    // checkScreenSize();
     gCtx = gCanvas.getContext('2d');
     // resizeCanvas();
 }
