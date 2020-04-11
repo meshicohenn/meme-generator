@@ -21,7 +21,7 @@ var gCurrentLineIdx = -1;
 function createCanvas() {
     gCanvas = document.querySelector('#my-canvas');
     gCtx = gCanvas.getContext('2d');
-    resizeCanvas();
+    // resizeCanvas();
 }
 
 function clearMark() {
@@ -93,7 +93,7 @@ function addLine() {
         bordercolor: 'black', font: 'Impact', border: 2,
         offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 8 * (gMeme.selectedLineIdx + 1)
     })
-    console.log('gMeme.selectedLineIdx', gMeme.selectedLineIdx, gCanvas.height / 8 *  gMeme.selectedLineIdx + 1);
+    console.log('gMeme.selectedLineIdx', gMeme.selectedLineIdx, gCanvas.height / 8 * gMeme.selectedLineIdx + 1);
 
 }
 
@@ -118,13 +118,6 @@ function changeText(text) {
 
 function getDetailsLine() {
     return gMeme.lines[gMeme.selectedLineIdx];
-}
-
-function resizeCanvas() {
-    var elContainer = document.querySelector('.canvas-container');
-    // Note: changing the canvas dimension this way clears the canvas
-    gCanvas.width = elContainer.offsetWidth
-    gCanvas.height = elContainer.offsetHeight
 }
 
 function switchLines() {
@@ -242,16 +235,23 @@ function downloadImg(elLink) {
     console.log(imgContent)
 
     elLink.href = imgContent
-    gIsDownload=true;
+    gIsDownload = true;
     drawImg();
 }
 
-function serviceSaveToStorage(){
+function serviceSaveToStorage() {
     var imgContent = gCanvas.toDataURL('image/jpeg');
     // debugger
     var loadMemsFromStorage = loadFromStorage('mems');
-    if(!loadMemsFromStorage) loadMemsFromStorage = [];
+    if (!loadMemsFromStorage) loadMemsFromStorage = [];
     loadMemsFromStorage.push(imgContent);
-    saveToStorage('mems',loadMemsFromStorage);
+    saveToStorage('mems', loadMemsFromStorage);
 }
 
+function checkScreenSize() {
+    var width = window.outerWidth;
+    if (width < 500){
+        gCanvas.width = 300;
+        gCanvas.height =300;
+    }
+}

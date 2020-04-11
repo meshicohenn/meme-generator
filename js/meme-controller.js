@@ -15,12 +15,14 @@ function renderGalleryPage() {
 }
 
 function renderGallery() {
+    
     var imgs = getImgs();
     var strHTML = imgs.map((img) => `<img class="meme-img" src="${img.url}" onclick="onSelectImg(${img.id})">`);
     document.querySelector('.photo-gallery').innerHTML = strHTML.join('');
 }
 
 function renderCanvasPage() {
+    checkScreenSize();
     document.querySelector('.canvas-page').style.display = 'flex';
     drawImg();
 }
@@ -37,10 +39,8 @@ function onSelectImg(id) {
     renderCanvasPage();
     createCanvas();
     gImgId = id;
-    // debugger
     createMeme(id);
     setGlobalUrl(id);
-    // drawImg();
 }
 
 function onChangeAlign(align) {

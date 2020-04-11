@@ -164,7 +164,7 @@ a{
 /*------------------------ canvas-page -----------------------*/
 
 .canvas-container{
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
 }
 
 .canvas-page{
@@ -173,20 +173,18 @@ a{
 }
 
 #my-canvas{
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover;
+    
     border-radius: 25px;
 }
 
 /*----------------- tools ----------------------*/
 
 .tools-container{
+    min-height: 400px;
     background-color: #5c5a5a;
     border-radius: 25px;
     padding-bottom: 20px;
     margin: 20px;
-    /* width: 70%; */
 }
 
 #text{
@@ -339,6 +337,7 @@ select{
     .main-nav{
         flex-wrap: wrap;
     }
+
 }
 
 /*--------------- flex ------------------------*/
