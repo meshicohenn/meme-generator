@@ -153,6 +153,10 @@ a{
 
 /*------------------------ canvas-page -----------------------*/
 
+.canvas-container{
+    border: 2px solid blue;
+}
+
 .canvas-page{
    width: 92%;
    display: none;

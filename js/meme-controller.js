@@ -26,6 +26,7 @@ function renderCanvasPage() {
 }
 
 function renderCanvasText() {
+    if(validateLimitsOfCanvas()) return;
     drawImg();
 }
 
@@ -93,5 +94,10 @@ function onChangeLineLocation(diff){
 
 function onSwitchText(){
     switchLines();
+    renderCanvasText();
+}
+
+function onDelete(){
+    clearCanvas();
     renderCanvasText();
 }

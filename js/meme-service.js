@@ -19,6 +19,7 @@ var gCurrentLineIdx = -1;
 function createCanvas() {
     gCanvas = document.querySelector('#my-canvas');
     gCtx = gCanvas.getContext('2d');
+    resizeCanvas();
 }
 
 function drawImg() {
@@ -67,7 +68,7 @@ function createMeme(imgId) {
         imgId: imgId,
         selectedLineIdx: 0,
         lines: [{
-            txt: 'first', size: 16, align: 'left', color: 'white',
+            txt: '', size: 16, align: 'left', color: 'white',
             bordercolor: 'black', font: 'Impact', border: 2,
             offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 4
         }]
@@ -75,13 +76,13 @@ function createMeme(imgId) {
 }
 
 function addLine() {
-  
+
     if (gMeme.lines.length === 2) {
         return console.log('cant add more lines :(');
     }
 
     gMeme.lines.push({
-        txt: 'first', size: 16, align: 'left', color: 'white',
+        txt: '', size: 16, align: 'left', color: 'white',
         bordercolor: 'black', font: 'Impact', border: 2,
         offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 1.2
     })
@@ -97,28 +98,26 @@ function ChangeFontSize(diff) {
 }
 
 function changeText(text) {
-    if (!gMeme.lines || gMeme.lines.length === 0) return console.log('cannot changing text');
+    // if (!gMeme.lines || gMeme.lines.length === 0) 
     //T.D add modal alert
     var line = getDetailsLine();
 
+    if (validateLimitsOfCanvas(line)) {
+        return console.log('cannot changing text');
+    }
     line.txt = text;
-    // console.log( gMeme.lines[gCurrentLineIdx].txt);
-    // drawText();
 }
 
 function getDetailsLine() {
     return gMeme.lines[gMeme.selectedLineIdx];
 }
 
-// function changeLineIdx() {
-//     // var lineIdx = gCurrentLineIdx + diff;
-//     // if (lineIdx < 0 || lineIdx > 1) {
-//     //     return console.log('cannot adding line');
-//     // }
-//         // strokeFrameText(x, y, line);
-
-//     gCurrentLineIdx++;
-// }
+function resizeCanvas() {
+    var elContainer = document.querySelector('.canvas-container');
+    // Note: changing the canvas dimension this way clears the canvas
+    gCanvas.width = elContainer.offsetWidth
+    gCanvas.height = elContainer.offsetHeight
+}
 
 function switchLines() {
     // if (gCurrentLineIdx == -1) return console.log('there is no line to switch with');
@@ -133,6 +132,18 @@ function switchLines() {
 function changeAlign(align) {
     var line = getDetailsLine();
     line.align = align;
+    switch (line.align) {
+        case 'left':
+            line.offsetX = 10;
+            break;
+        case 'center':
+            line.offsetX = gCanvas.width / 2;;
+            break;
+        case 'right':
+            line.offsetX = gCanvas.width - 10 - gCtx.measureText(line.txt).width;
+        default:
+            break;
+    }
 }
 
 function changeFontFamely(font) {
@@ -162,41 +173,56 @@ function changeLineLocation(diff) {
     line.offsetY += diff;
 }
 
+function clearCanvas() {
+    // gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height)
+    gMeme.lines = [{
+        txt: '', size: 16, align: 'left', color: 'white',
+        bordercolor: 'black', font: 'Impact', border: 2,
+        offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 4
+    }];
+}
+
 function drawText(line) {
-   
+
     var x = line.offsetX;
     var y = line.offsetY;
-    // debugger
+
+    gCtx.beginPath();
     gCtx.strokeStyle = line.bordercolor;
     gCtx.fillStyle = line.color;
     gCtx.font = `${line.size}` + 'px ' + `${line.font}`;;
-    gCtx.textAlign = line.align;
     gCtx.lineWidth = line.border;
     gCtx.fillText(line.txt, x, y);
     gCtx.strokeText(line.txt, x, y);
-    console.log('gCtx.width', gCtx.measureText(line.txt).width);
-    console.log('gCtx.height', parseInt(gCtx.font));
 
+    // console.log('gCtx.width', gCtx.measureText(line.txt).width);
+    // console.log('gCtx.height', parseInt(gCtx.font));
+    gCtx.closePath()
 
-    // drawImg();
 }
 
 function strokeFrameText() {
-
     var line = getDetailsLine();
-    gCtx.strokeStyle = line.bordercolor;
-    gCtx.fillStyle = line.color;
-    gCtx.font = `${line.size}` + 'px ' + `${line.font}`;;
-    gCtx.textAlign = line.align;
-    gCtx.lineWidth = line.border;
-    gCtx.fillText(line.txt, x, y);
-    gCtx.strokeText(line.txt, x, y);
     var x = line.offsetX;
     var y = line.offsetY;
     var width = gCtx.measureText(line.txt).width + 8;
     var height = parseInt(gCtx.font) * 1.286;
     var xPos = x - 4;
     var yPos = y - (height / 1.3);
+    gCtx.beginPath()
+    gCtx.strokeStyle = 'black';
     gCtx.strokeRect(xPos, yPos, width, height);
+    gCtx.closePath()
 
+}
+
+function validateLimitsOfCanvas() {
+    var line = getDetailsLine();
+    var x = line.offsetX;
+    var y = line.offsetY;
+    if (x + gCtx.measureText(line.txt).width > gCanvas.width) {
+        console.log('your text is too long');
+        return true;
+    }
+    return false;
 }
