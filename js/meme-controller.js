@@ -22,7 +22,6 @@ function renderGallery() {
 }
 
 function renderCanvasPage() {
-    checkScreenSize();
     document.querySelector('.canvas-page').style.display = 'flex';
     drawImg();
 }
