@@ -25,16 +25,33 @@
         </div>
     </header>
     <main class="main-content flex justify-center">
-        <div class="gallery container flex justify-center flex-column">
-            <div class="top-line flex align-center justify-center">
-                <input id="search" class="search flex-grow" type="text" placeholder="search" onkeyup="onSearch()">
-                <!-- <div class="keyWords flex-grow flex justify-center align-center">
-                    <span>funny &nbsp; </span>
-                    <span>animal &nbsp; </span>
-                    <span>men &nbsp; </span>
-                    <span>woman &nbsp; </span>
-                    <span>baby &nbsp; </span>
-                </div> -->
+        <div class="gallery container flex justify-center align-center flex-column">
+            <div class="top-line flex justify-center">
+                <!-- <input id="search" class="search flex-grow" type="text" placeholder="search"
+                    onkeyup="onSearch(this.value)"> -->
+                <div class="search-container flex">
+                    <input type="text" list="keyWords" class="search" oninput="onSearch(this.value)"
+                        placeholder="Search By?">
+                    <datalist id="keyWords">
+                        <option value="government"></option>
+                        <option value="sweet"></option>
+                        <option value="brown"></option>
+                        <option value="red"></option>
+                        <option value="baby"></option>
+                        <option value="angry"></option>
+                        <option value="dog"></option>
+                        <option value="obama"></option>
+                        <option value="smile"></option>
+                    </datalist>
+                </div>
+                <div class="keyWords-container flex wrap justify-center align-center ">
+                    <button class="keyWords" onclick="onSearch('sweet')">sweet </button>
+                    <button class="keyWords" onclick="onSearch('brown')">brown</button>
+                    <button class="keyWords" onclick="onSearch('government')">government</button>
+                    <button class="keyWords" onclick="onSearch('baby')">baby</button>
+                    <button class="keyWords" onclick="onSearch('smile')">smile</button>
+                    <button class="keyWords" onclick="onSearch('')">clear-search</button>
+                </div>
             </div>
             <div class="photo-contianer grid">
                 <div class="photo-gallery grid grid-container">
@@ -44,15 +61,13 @@
             </div>
         </div>
 
-
-
         <div class="canvas-page container justify-center">
             <!-- to add wrap -->
             <div class="canvas-and-img-container flex align-center justify-center">
-                    <div class="canvas-container">
-                        <canvas id="my-canvas" height="400" width="400" onmousedown="onMouseDown(event)" 
+                <div class="canvas-container">
+                    <canvas id="my-canvas" height="400" width="400" onmousedown="onMouseDown(event)"
                         onmouseup="onMouseUp(event)" onmousemove="onMouseMove(event)"></canvas>
-                    </div>
+                </div>
                 <div class="tools-container flex flex-column align-center justify-center wrap">
                     <input type="text" id="text" class="txt-input" placeholder="what on your mind?"
                         onkeyup="onChangeText(this.value)">
@@ -110,13 +125,6 @@
                             <button class="fas fa-eye-dropper fa-lg"
                                 onclick="onShowColorChange('border-color')"></button>
 
-
-
-                            <!-- <button><label for="border-color" class="border-color"></label>
-                        </button> -->
-
-
-                            <!-- <input type="color" class="border-color" id="border-color" onchange="onChangeStrokeColor()"> -->
                         </div>
                     </div>
                     <div class="emoji-container flex justify-center align-center">
@@ -128,14 +136,14 @@
                         <img class="stricker" src="img/louis.webp" alt="WebP rules." onclick="onSelectedSticker(4)"> -->
                     </div>
                     <div class="bottom-btn-container flex wrap justify-center">
-                        <form class="share flex justify-center align-center" action="" method="POST"
+                        <form class="share-container flex justify-center align-center" action="" method="POST"
                             enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
                             <input name="img" id="imgData" type="hidden">
-                            <!-- <button class="btn-share" type="submit" onclick="onPublish(event)">Publish</button>
-                        <div class="share-container"></div> -->
-                            <a class="download flex justify-center align-center " href="#" onmousedown="clearMark()" onmouseup="onDownload(this)"
-                                download="my-img.jpg">Download</a>
+                            <button class="btn-share" type="submit">Publish</button>
+                            <div class="share-container"></div>
                         </form>
+                        <a class="download flex justify-center align-center " href="#" onmousedown="clearMark()"
+                            onmouseup="onDownload(this)" download="my-img.jpg">Download</a>
                         <button class="save-btn" onclick="onSaveCanvas()">Save</button>
                     </div>
                 </div>
@@ -143,6 +151,7 @@
         </div>
     </main>
     <script src="js/meme-util-service.js"></script>
+    <script src="js/upload-service.js"></script>
     <script src="js/meme-controller.js"></script>
     <script src="js/meme-service.js"></script>
     <script src="js/meme-local-storage.js"></script>

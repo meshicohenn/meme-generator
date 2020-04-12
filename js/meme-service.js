@@ -8,6 +8,7 @@ var gKeywords = {
 }
 
 var gImgs = Array(SIZE).fill({});
+var gImgsAfterFilter = [];
 var rect = {};
 
 var gIsDownload = false;
@@ -16,16 +17,45 @@ var gCtx;
 var gCanvas;
 var gCurrentUrl;
 var gMemsToStorage;
+var isFilterOn = false;
 
 //drag&drop properties
-var dragok = false;
+var dragOk = false;
 var startX;
 var startY;
 var offsetX;
 var offsetY;
 
+function filterBy(key) {
+    if (!key) {
+        return isFilterOn = false;
+    }
+    isFilterOn = true;
+    gImgsAfterFilter = gImgs.filter((img) => {
+        if (img.keywords.includes(key)) return img;
+    });
+
+}
+
 function addDatakeywords() {
-    
+    gImgs[0].keywords = ['trump', 'angry', 'government', 'red'];
+    gImgs[1].keywords = ['sweet', 'dog', 'brown'];
+    gImgs[2].keywords = ['sweet', 'dog', 'bed', 'white'];
+    gImgs[3].keywords = ['sweet', 'cat', 'keyboard', 'grey'];
+    gImgs[4].keywords = ['sweet', 'angry', 'baby', 'green'];
+    gImgs[5].keywords = ['trump', 'angry', 'government', 'red'];
+    gImgs[6].keywords = ['sweet', 'surprise', 'baby', 'brown'];
+    gImgs[7].keywords = ['clown', 'smile', 'purple'];
+    gImgs[8].keywords = ['sweet', 'smile', 'baby', 'green'];
+    gImgs[9].keywords = ['obama', 'smile', 'government', 'brown'];
+    gImgs[10].keywords = ['sport', 'brown'];
+    gImgs[11].keywords = ['hect', 'youdid', 'grey'];
+    gImgs[12].keywords = ['brad', 'wine', 'youdid', 'handsome'];
+    gImgs[13].keywords = ['sunglasses', 'angry', 'brown'];
+    gImgs[14].keywords = ['movie', 'brown'];
+    gImgs[15].keywords = ['moviw', 'red'];
+    gImgs[16].keywords = ['putin', 'angry', 'government', 'red'];
+    gImgs[17].keywords = ['toy-story', 'woddy', 'green', 'red'];
 }
 
 function createCanvas() {
@@ -35,7 +65,6 @@ function createCanvas() {
     var BB = gCanvas.getBoundingClientRect();
     offsetX = BB.left;
     offsetY = BB.top;
-    // resizeCanvas();
 }
 
 function clearMark() {
@@ -58,6 +87,9 @@ function drawImg() {
 }
 
 function getImgs() {
+    if (isFilterOn) {
+        return gImgsAfterFilter;
+    }
     return gImgs;
 }
 
@@ -72,7 +104,7 @@ function createGallery() {
         return img = createImg(idx, 'img/' + ++idx + '.jpg', 'popo');
     });
     gImgs = imgs;
-
+    addDatakeywords();
 }
 
 function createImg(id, url, keywords) {
@@ -218,7 +250,7 @@ function drawText(line) {
 }
 
 function strokeFrameText() {
-    if (!dragok) {
+    if (!dragOk) {
         // var line = getDetailsLine();
         // var x = line.offsetX;
         // var y = line.offsetY;
@@ -299,9 +331,7 @@ function serviceSaveToStorage() {
 //     }
 // }
 
-function filterBy() {
 
-}
 
 //drag&drop
 function dragAndDropMouseDown(e) {
@@ -314,11 +344,11 @@ function dragAndDropMouseDown(e) {
     var my = parseInt(e.clientY - offsetY);
 
     // test each rect to see if mouse is inside
-    dragok = false;
+    dragOk = false;
     var r = rect;
     if (mx > r.x && mx < r.x + r.width && my > r.y && my < r.y + r.height) {
         // if yes, set that rects isDragging=true
-        dragok = true;
+        dragOk = true;
         r.isDragging = true;
     }
     // save the current mouse position
@@ -332,13 +362,13 @@ function dragAndDropMouseUp(e) {
     e.stopPropagation();
 
     // clear all the dragging flags
-    dragok = false;
+    dragOk = false;
     rect.isDragging = false;
 }
 
 function dragAndDropMouseMove(e) {
     // if we're dragging anything...
-    if (dragok) {
+    if (dragOk) {
         // debugger
 
         // tell the browser we're handling this mouse event
@@ -385,8 +415,8 @@ function markCurrText(e) {
     var my = parseInt(e.clientY - offsetY);
 
     // var line = getDetailsLine();
-    gMeme.lines.forEach((line,idx)=>{
-        
+    gMeme.lines.forEach((line, idx) => {
+
         var positions = getPositionRecMark(line);
         // debugger
         if (mx > positions.xPos && mx < positions.xPos + positions.width && my > positions.yPos && my < positions.yPos + positions.height) {

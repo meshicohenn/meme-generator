@@ -115,14 +115,30 @@ a{
 
 .top-line{
     width: 90%;
-    height: 20%;
-    align-self: auto;
-    margin: auto;
+    height: 40%;
+    margin-bottom: 30px;
+}
+
+.search-container{
+    width: 40%;
+    height: 2rem;
+    margin: 2rem;
+    margin-right: 0;
 }
 
 .search{
-    margin: 2rem;
     border-radius: 8px;
+    width: 100%;
+}
+.search::placeholder{
+    font-family: Lato;
+    text-align: center;
+}
+
+.keyWords-container{
+    width: 60%;
+    height: 2rem;
+    margin: 2rem
 }
 
 .keyWords{
@@ -130,9 +146,12 @@ a{
     background: linear-gradient(blue, 10%, pink);
     border-radius: 8px;
     border-style: groove;
-    width: 50%;
-    height: 30%;
-    margin: 2rem;
+    font-family: Lato;
+    /* width: 150px; */
+    font-size: 18px;
+    color: #34373a;
+    /* margin: 2px; */
+    margin: 4px;
 }
 
 .meme-img{
@@ -293,6 +312,21 @@ select{
     display: none;
 }
 
+.btn-share{
+    width: 5rem;
+    height: 2rem;
+    box-shadow: 0px 2px 0 rgba(92, 92, 92, 0.55);
+    border-radius: 10px;
+    margin: 10px;
+    margin-right: 1px;
+    color: white;
+    font-family: Lato;
+    font-size: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    background-image: linear-gradient(-38deg, #f9bccc 0%, #b88bda 50%, #4c39ef 100%);
+}
+
 .save-btn{
     width: 5rem;
     height: 2rem;
@@ -310,7 +344,6 @@ select{
 }
 
 .download{
-    width: 8rem;
     height: 2rem;
     box-shadow: 0px 2px 0 rgba(92, 92, 92, 0.55);
     border-radius: 10px;
@@ -326,6 +359,7 @@ select{
     border-color: buttonface;
     border-image: initial;
     background-image: linear-gradient(-38deg, #f9bccc 0%, #b88bda 50%, #4c39ef 100%);
+    text-align: center;
 
 }
 

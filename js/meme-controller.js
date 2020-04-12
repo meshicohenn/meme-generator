@@ -9,7 +9,6 @@ function onInit() {
 }
 
 function renderGalleryPage() {
-
     document.querySelector('.gallery').style.display = 'flex';
     renderGallery();
 }
@@ -118,8 +117,10 @@ function backToGallery(){
     onInit();
 }
 
-function onSearch(){
-    filterBy();
+function onSearch(value){
+    // debugger
+    filterBy(value);
+    renderGallery();
 }
 
 function onMouseDown(event){
@@ -133,4 +134,8 @@ function onMouseUp(event){
 
 function onMouseMove(event){
     dragAndDropMouseMove(event);
+}
+
+function onPublish(event){
+    
 }
