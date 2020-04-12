@@ -322,7 +322,6 @@ function dragAndDropMouseDown(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
-    debugger
 
     // get the current mouse position
     var mx = parseInt(e.clientX - offsetX);
