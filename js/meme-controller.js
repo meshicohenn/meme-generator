@@ -26,7 +26,7 @@ function renderCanvasPage() {
 }
 
 function renderCanvasText() {
-    if(validateLimitsOfCanvas()) return;
+    // if(validateLimitsOfCanvas()) return;
 
     drawImg();
 }
@@ -53,6 +53,7 @@ function onChangeFontFamely(font) {
 }
 
 function onAddText() {
+    document.querySelector('.txt-input').value = '';
     addLine();
     renderCanvasText();
 }
@@ -110,6 +111,7 @@ function onDownload(elImg){
 
 function onSaveCanvas(){
     serviceSaveToStorage();
+    document.querySelector('.modal').style.display = 'block';
 }
 
 function backToGallery(){
@@ -136,6 +138,6 @@ function onMouseMove(event){
     dragAndDropMouseMove(event);
 }
 
-function onPublish(event){
-    
+function onCloseModal(){
+    document.querySelector('.modal').style.display='none';
 }
