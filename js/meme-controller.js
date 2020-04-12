@@ -117,3 +117,19 @@ function backToGallery(){
     document.querySelector('.canvas-page').style.display = 'none';
     onInit();
 }
+
+function onSearch(){
+    filterBy();
+}
+
+function onMouseDown(event){
+    myMouseDown(event);
+}
+
+function onMouseUp(event){
+    myUp(event);
+}
+
+function onMouseMove(event){
+    myMove(event);
+}

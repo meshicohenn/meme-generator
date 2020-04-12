@@ -8,6 +8,7 @@ var gKeywords = {
 }
 
 var gImgs = Array(SIZE).fill({});
+var rect = {};
 
 var gIsDownload = false;
 var gMeme = {};
@@ -15,13 +16,20 @@ var gCtx;
 var gCanvas;
 var gCurrentUrl;
 var gMemsToStorage;
-
-var gCurrentLineIdx = -1;
+//check
+var dragok = false;
+var startX;
+var startY;
+var offsetX;
+var offsetY;
 
 function createCanvas() {
     gCanvas = document.querySelector('#my-canvas');
     // checkScreenSize();
     gCtx = gCanvas.getContext('2d');
+    var BB = gCanvas.getBoundingClientRect();
+    offsetX = BB.left;
+    offsetY = BB.top;
     // resizeCanvas();
 }
 
@@ -177,7 +185,6 @@ function changeLineLocation(diff) {
 }
 
 function deleteLineCanvas() {
-    // debugger
     gMeme.lines.splice(gMeme.selectedLineIdx, 1);
     if (gMeme.selectedLineIdx + 1 > gMeme.lines.length - 1) {
         return gMeme.selectedLineIdx = 0;
@@ -189,6 +196,11 @@ function drawText(line) {
     var x = line.offsetX;
     var y = line.offsetY;
 
+    if(dragok){
+        x = rect.x+4;
+        y = rect.y + (rect.height/1.3);
+    }
+
     gCtx.beginPath();
     gCtx.strokeStyle = line.bordercolor;
     gCtx.fillStyle = line.color;
@@ -197,25 +209,36 @@ function drawText(line) {
     gCtx.fillText(line.txt, x, y);
     gCtx.strokeText(line.txt, x, y);
 
-    // console.log('gCtx.width', gCtx.measureText(line.txt).width);
-    // console.log('gCtx.height', parseInt(gCtx.font));
+    gCtx.closePath();
+}
+
+function strokeFrameText() {
+    if (!dragok) {
+        var line = getDetailsLine();
+        var x = line.offsetX;
+        var y = line.offsetY;
+        var width = gCtx.measureText(line.txt).width + 8;
+        var height = parseInt(gCtx.font) * 1.286;
+        var xPos = x - 4;
+        var yPos = y - (height / 1.3);
+        setRectMarkText(xPos, yPos, width, height);
+    }
+
+    gCtx.beginPath()
+    gCtx.strokeStyle = 'black';
+    gCtx.strokeRect(rect.x, rect.y, rect.width, rect.height);
     gCtx.closePath()
 
 }
 
-function strokeFrameText() {
-    var line = getDetailsLine();
-    var x = line.offsetX;
-    var y = line.offsetY;
-    var width = gCtx.measureText(line.txt).width + 8;
-    var height = parseInt(gCtx.font) * 1.286;
-    var xPos = x - 4;
-    var yPos = y - (height / 1.3);
-    gCtx.beginPath()
-    gCtx.strokeStyle = 'black';
-    gCtx.strokeRect(xPos, yPos, width, height);
-    gCtx.closePath()
-
+function setRectMarkText(x, y, width, height) {
+    rect = {
+        x: x,
+        y: y,
+        width: width,
+        height: height,
+        isDragging: false
+    }
 }
 
 function validateLimitsOfCanvas(text) {
@@ -249,10 +272,89 @@ function serviceSaveToStorage() {
     saveToStorage('mems', loadMemsFromStorage);
 }
 
-function checkScreenSize() {
-    var width = window.outerWidth;
-    if (width < 500) {
-        gCanvas.width = 300;
-        gCanvas.height = 300;
+// function checkScreenSize() {
+//     var width = window.outerWidth;
+//     if (width < 500) {
+//         gCanvas.width = 300;
+//         gCanvas.height = 300;
+//     }
+// }
+
+function filterBy() {
+
+}
+
+//drag&drop
+function myMouseDown(e) {
+    // tell the browser we're handling this mouse event
+    e.preventDefault();
+    e.stopPropagation();
+
+    // get the current mouse position
+    var mx = parseInt(e.clientX - offsetX);
+    var my = parseInt(e.clientY - offsetY);
+
+    // test each rect to see if mouse is inside
+    dragok = false;
+    var r = rect;
+    if (mx > r.x && mx < r.x + r.width && my > r.y && my < r.y + r.height) {
+        // if yes, set that rects isDragging=true
+        dragok = true;
+        r.isDragging = true;
+    }
+    // save the current mouse position
+    startX = mx;
+    startY = my;
+}
+
+function myUp(e) {
+    // tell the browser we're handling this mouse event
+    e.preventDefault();
+    e.stopPropagation();
+
+    // clear all the dragging flags
+    var line = getDetailsLine();
+    line.offsetX = rect.x;
+    line.offsetY = rect.y;
+    dragok = false;
+    rect.isDragging = false;
+}
+
+function myMove(e) {
+    // if we're dragging anything...
+    if (dragok) {
+        // debugger
+
+        // tell the browser we're handling this mouse event
+        e.preventDefault();
+        e.stopPropagation();
+
+        // get the current mouse position
+        var mx = parseInt(e.clientX - offsetX);
+        var my = parseInt(e.clientY - offsetY);
+
+        // calculate the distance the mouse has moved
+        // since the last mousemove
+        var dx = mx - startX;
+        var dy = my - startY;
+
+        // move each rect that isDragging 
+        // by the distance the mouse has moved
+        // since the last mousemove
+
+        var r = rect;
+        if (r.isDragging) {
+            r.x += dx;
+            r.y += dy;
+        }
+
+        // redraw the scene with the new rect positions
+        drawImg();
+
+        // reset the starting mouse position for the next mousemove
+        startX = mx;
+        startY = my;
+
     }
 }
+

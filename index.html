@@ -27,7 +27,7 @@
     <main class="main-content flex justify-center">
         <div class="gallery container flex justify-center flex-column">
             <div class="top-line flex align-center justify-center">
-                <input id="search" class="search flex-grow" type="text" placeholder="search">
+                <input id="search" class="search flex-grow" type="text" placeholder="search" onkeyup="onSearch()">
                 <!-- <div class="keyWords flex-grow flex justify-center align-center">
                     <span>funny &nbsp; </span>
                     <span>animal &nbsp; </span>
@@ -50,7 +50,8 @@
             <!-- to add wrap -->
             <div class="canvas-and-img-container flex align-center justify-center">
                     <div class="canvas-container">
-                        <canvas id="my-canvas" height="400" width="400" ></canvas>
+                        <canvas id="my-canvas" height="400" width="400" onmousedown="onMouseDown(event)" 
+                        onmouseup="onMouseUp(event)" onmousemove="onMouseMove(event)"></canvas>
                     </div>
                 <div class="tools-container flex flex-column align-center justify-center wrap">
                     <input type="text" id="text" class="txt-input" placeholder="what on your mind?"
@@ -149,5 +150,5 @@
 
 </html>
 
-<!-- onkeyup="onSearch()"
+<!-- "
  onclick="setFillterdByClick('funny')" -->
