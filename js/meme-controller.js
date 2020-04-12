@@ -123,13 +123,14 @@ function onSearch(){
 }
 
 function onMouseDown(event){
-    myMouseDown(event);
+    dragAndDropMouseDown(event);
+    markCurrText(event);
 }
 
 function onMouseUp(event){
-    myUp(event);
+    dragAndDropMouseUp(event);
 }
 
 function onMouseMove(event){
-    myMove(event);
+    dragAndDropMouseMove(event);
 }

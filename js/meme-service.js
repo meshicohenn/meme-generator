@@ -16,12 +16,17 @@ var gCtx;
 var gCanvas;
 var gCurrentUrl;
 var gMemsToStorage;
-//check
+
+//drag&drop properties
 var dragok = false;
 var startX;
 var startY;
 var offsetX;
 var offsetY;
+
+function addDatakeywords() {
+    
+}
 
 function createCanvas() {
     gCanvas = document.querySelector('#my-canvas');
@@ -196,10 +201,10 @@ function drawText(line) {
     var x = line.offsetX;
     var y = line.offsetY;
 
-    if(dragok){
-        x = rect.x+4;
-        y = rect.y + (rect.height/1.3);
-    }
+    // if(dragok){
+    //     x = rect.x+4;
+    //     y = rect.y + (rect.height/1.3);
+    // }
 
     gCtx.beginPath();
     gCtx.strokeStyle = line.bordercolor;
@@ -214,14 +219,15 @@ function drawText(line) {
 
 function strokeFrameText() {
     if (!dragok) {
-        var line = getDetailsLine();
-        var x = line.offsetX;
-        var y = line.offsetY;
-        var width = gCtx.measureText(line.txt).width + 8;
-        var height = parseInt(gCtx.font) * 1.286;
-        var xPos = x - 4;
-        var yPos = y - (height / 1.3);
-        setRectMarkText(xPos, yPos, width, height);
+        // var line = getDetailsLine();
+        // var x = line.offsetX;
+        // var y = line.offsetY;
+        // var width = gCtx.measureText(line.txt).width + 8;
+        // var height = parseInt(gCtx.font) * 1.286;
+        // var xPos = x - 4;
+        // var yPos = y - (height / 1.3);
+        var positions = getPositionRecMark();
+        setRectMarkText(positions.xPos, positions.yPos, positions.width, positions.height);
     }
 
     gCtx.beginPath()
@@ -229,6 +235,19 @@ function strokeFrameText() {
     gCtx.strokeRect(rect.x, rect.y, rect.width, rect.height);
     gCtx.closePath()
 
+}
+
+function getPositionRecMark(line) {
+    if (!line) {
+        var line = getDetailsLine();
+    }
+    var x = line.offsetX;
+    var y = line.offsetY;
+    var width = gCtx.measureText(line.txt).width + 8;
+    var height = parseInt(gCtx.font) * 1.286;
+    var xPos = x - 4;
+    var yPos = y - (height / 1.3);
+    return { xPos, yPos, width, height };
 }
 
 function setRectMarkText(x, y, width, height) {
@@ -259,7 +278,7 @@ function downloadImg(elLink) {
     console.log(imgContent)
 
     elLink.href = imgContent
-    gIsDownload = true;
+    gIsDownload = false;
     drawImg();
 }
 
@@ -285,7 +304,7 @@ function filterBy() {
 }
 
 //drag&drop
-function myMouseDown(e) {
+function dragAndDropMouseDown(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
@@ -307,20 +326,17 @@ function myMouseDown(e) {
     startY = my;
 }
 
-function myUp(e) {
+function dragAndDropMouseUp(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
 
     // clear all the dragging flags
-    var line = getDetailsLine();
-    line.offsetX = rect.x;
-    line.offsetY = rect.y;
     dragok = false;
     rect.isDragging = false;
 }
 
-function myMove(e) {
+function dragAndDropMouseMove(e) {
     // if we're dragging anything...
     if (dragok) {
         // debugger
@@ -347,6 +363,9 @@ function myMove(e) {
             r.x += dx;
             r.y += dy;
         }
+        var line = getDetailsLine();
+        line.offsetX = r.x + 4;
+        line.offsetY = rect.y + (rect.height / 1.3);;
 
         // redraw the scene with the new rect positions
         drawImg();
@@ -356,5 +375,25 @@ function myMove(e) {
         startY = my;
 
     }
+}
+
+function markCurrText(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var mx = parseInt(e.clientX - offsetX);
+    var my = parseInt(e.clientY - offsetY);
+
+    // var line = getDetailsLine();
+    gMeme.lines.forEach((line,idx)=>{
+        
+        var positions = getPositionRecMark(line);
+        // debugger
+        if (mx > positions.xPos && mx < positions.xPos + positions.width && my > positions.yPos && my < positions.yPos + positions.height) {
+            // if yes, set that rects isDragging=true
+            gMeme.selectedLineIdx = idx;
+            drawImg();
+        }
+    })
 }
 
