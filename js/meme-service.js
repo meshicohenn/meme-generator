@@ -27,11 +27,7 @@ var offsetX;
 var offsetY;
 
 //drag&drop for mobile
-// var isMobile = false;
-// var mc = new Hammer(myBlock);
-// var lastPosX = 0;
-// var lastPosY = 0;
-// var isDragging = false;
+
 
 function filterBy(key) {
     if (!key) {
@@ -72,17 +68,27 @@ function createCanvas() {
     var BB = gCanvas.getBoundingClientRect();
     offsetX = BB.left;
     offsetY = BB.top;
+    
     dragAndDropTouchStart();
+    
 }
+
+// function checkMobile() {
+//     if (window.outerWidth < 660) {
+//         return true;
+//     }
+// }
 
 function clearMark() {
     gIsDownload = true;
     drawImg();
 }
 
-function drawImg() {
+function drawImg(url) {
     var img = new Image();
-    var url = gCurrentUrl;
+    if (!url) {
+        var url = gCurrentUrl;
+    }
     img.src = url;
     // debugger
     img.onload = () => {
@@ -124,11 +130,14 @@ function createImg(id, url, keywords) {
 }
 
 function createMeme(imgId) {
+    if (!imgId) {
+        gImgs.push({ id: 'imgUp', url: gCurrentUrl });
+    }
     gMeme = {
         imgId: imgId,
         selectedLineIdx: 0,
         lines: [{
-            txt: '', size: 16, align: 'left', color: 'white',
+            txt: 'what on your mind?', size: 16, align: 'left', color: 'white',
             bordercolor: 'black', font: 'Impact', border: 2,
             offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 8
         }]
@@ -142,7 +151,7 @@ function addLine() {
     gMeme.selectedLineIdx++;
 
     gMeme.lines.push({
-        txt: '', size: 16, align: 'left', color: 'white',
+        txt: 'what on your mind?', size: 16, align: 'left', color: 'white',
         bordercolor: 'black', font: 'Impact', border: 2,
         offsetX: gCanvas.width / 4, offsetY: gCanvas.height / 8 * (gMeme.selectedLineIdx + 1)
     })
@@ -308,21 +317,12 @@ function serviceSaveToStorage() {
     saveToStorage('mems', loadMemsFromStorage);
 }
 
-// function checkScreenSize() {
-//     var width = window.outerWidth;
-//     if (width < 600) {
-//         isMobile = true;
-//         gCanvas.width = 300;
-//         gCanvas.height = 300;
-//     }
-// }
-
-
 //drag&drop
 function dragAndDropMouseDown(e) {
     // tell the browser we're handling this mouse event
     e.preventDefault();
     e.stopPropagation();
+    debugger
 
     // get the current mouse position
     var mx = parseInt(e.clientX - offsetX);
@@ -416,7 +416,9 @@ function markCurrText(e) {
 function dragAndDropTouchStart() {
     var hammertouch = new Hammer(gCanvas);
 
-    hammertouch.on('panstart', function (e) {
+    hammertouch.on('press', function (e) {
+        if (e.pointerType === 'mouse') return;
+
         var offsetX = e.srcEvent.offsetX;
         var offsetY = e.srcEvent.offsetY;
         gMeme.lines.forEach((line, idx) => {
@@ -429,6 +431,7 @@ function dragAndDropTouchStart() {
     });
     hammertouch.on('pan', function (e) {
         if (e.pointerType === 'mouse') return;
+
         var offsetX = e.srcEvent.offsetX;
         var offsetY = e.srcEvent.offsetY;
 
@@ -441,3 +444,4 @@ function dragAndDropTouchStart() {
         drawImg();
     });
 }
+

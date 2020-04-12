@@ -119,9 +119,14 @@ a{
     margin-bottom: 30px;
 }
 
+
+.upload-btn.fas{
+    font-size: 35px;
+    margin-right: 5px;
+}
+
 .search-container{
     width: 40%;
-    height: 2rem;
     margin: 2rem;
     margin-right: 0;
 }
@@ -129,6 +134,8 @@ a{
 .search{
     border-radius: 8px;
     width: 100%;
+    height: 40px;
+
 }
 .search::placeholder{
     font-family: Lato;
@@ -154,9 +161,13 @@ a{
 }
 
 .meme-img{
-    height: 160px;
     border-radius: 10px;
     cursor: pointer;
+    height: 190px;
+}
+
+.meme-img:hover{
+    opacity: 0.6;
 }
 
 .photo-contianer{

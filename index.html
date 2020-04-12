@@ -32,19 +32,28 @@
                 <!-- <input id="search" class="search flex-grow" type="text" placeholder="search"
                     onkeyup="onSearch(this.value)"> -->
                 <div class="search-container flex">
-                    <input type="text" list="keyWords" class="search" oninput="onSearch(this.value)"
-                        placeholder="Search By?">
-                    <datalist id="keyWords">
-                        <option value="government"></option>
-                        <option value="sweet"></option>
-                        <option value="brown"></option>
-                        <option value="red"></option>
-                        <option value="baby"></option>
-                        <option value="angry"></option>
-                        <option value="dog"></option>
-                        <option value="obama"></option>
-                        <option value="smile"></option>
-                    </datalist>
+                    <div class="upload-search flex align-center">
+                        <label class="" for="fileInput">
+                            <i class="upload-btn fas fa-file-upload"></i>
+                        </label>
+                        <input class="file-input btn" id="fileInput" type="file" name="image" onchange="onUpload(event)"
+                            hidden />
+
+
+                        <input type="text" list="keyWords" class="search" oninput="onSearch(this.value)"
+                            placeholder="Search By?">
+                        <datalist id="keyWords">
+                            <option value="government"></option>
+                            <option value="sweet"></option>
+                            <option value="brown"></option>
+                            <option value="red"></option>
+                            <option value="baby"></option>
+                            <option value="angry"></option>
+                            <option value="dog"></option>
+                            <option value="obama"></option>
+                            <option value="smile"></option>
+                        </datalist>
+                    </div>
                 </div>
                 <div class="keyWords-container flex wrap justify-center align-center ">
                     <button class="keyWords" onclick="onSearch('sweet')">sweet </button>
@@ -57,7 +66,6 @@
             </div>
             <div class="photo-contianer grid">
                 <div class="photo-gallery grid grid-container">
-
 
                 </div>
             </div>

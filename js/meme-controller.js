@@ -14,7 +14,7 @@ function renderGalleryPage() {
 }
 
 function renderGallery() {
-    
+
     var imgs = getImgs();
     var strHTML = imgs.map((img) => `<img class="meme-img" src="${img.url}" onclick="onSelectImg(${img.id})">`);
     document.querySelector('.photo-gallery').innerHTML = strHTML.join('');
@@ -27,7 +27,6 @@ function renderCanvasPage() {
 
 function renderCanvasText() {
     // if(validateLimitsOfCanvas()) return;
-
     drawImg();
 }
 
@@ -90,54 +89,80 @@ function onChangeColor(value) {
     renderCanvasText();
 }
 
-function onChangeLineLocation(diff){
+function onChangeLineLocation(diff) {
     changeLineLocation(diff);
     renderCanvasText();
 }
 
-function onSwitchText(){
+function onSwitchText() {
     switchLines();
     renderCanvasText();
 }
 
-function onDelete(){
+function onDelete() {
     deleteLineCanvas();
     renderCanvasText();
 }
 
-function onDownload(elImg){
+function onDownload(elImg) {
     downloadImg(elImg);
 }
 
-function onSaveCanvas(){
+function onSaveCanvas() {
     serviceSaveToStorage();
     document.querySelector('.modal').style.display = 'block';
 }
 
-function backToGallery(){
+function backToGallery() {
     document.querySelector('.canvas-page').style.display = 'none';
     onInit();
 }
 
-function onSearch(value){
+function onSearch(value) {
     // debugger
     filterBy(value);
     renderGallery();
 }
 
-function onMouseDown(event){
+function onMouseDown(event) {
     dragAndDropMouseDown(event);
     markCurrText(event);
 }
 
-function onMouseUp(event){
+function onMouseUp(event) {
     dragAndDropMouseUp(event);
 }
 
-function onMouseMove(event){
+function onMouseMove(event) {
     dragAndDropMouseMove(event);
 }
 
-function onCloseModal(){
-    document.querySelector('.modal').style.display='none';
+function onCloseModal() {
+    document.querySelector('.modal').style.display = 'none';
+}
+
+
+function renderUploadImg(img) {
+    document.querySelector('.gallery').style.display = 'none';
+    document.querySelector('.canvas-page').style.display = 'flex';
+    console.log('url', img);
+    createCanvas();
+    gCurrentUrl = img;
+    createMeme();
+    drawImg(img);
+}
+
+function onUpload(ev) {
+    loadImageFromInput(ev, renderUploadImg)
+}
+
+function loadImageFromInput(ev, onImageReady) {
+    var reader = new FileReader();
+    
+    reader.onload = function (event) {
+        console.log('hii');
+        
+        onImageReady(event.target.result)
+    }
+    reader.readAsDataURL(ev.target.files[0]);
 }
