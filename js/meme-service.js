@@ -65,7 +65,7 @@ function addDatakeywords() {
     gImgs[21].keywords = ['red'];
     gImgs[22].keywords = ['brown'];
     gImgs[23].keywords = ['brown'];
-    gImgs[24].keywords =  ['trump', 'angry', 'government'];
+    gImgs[24].keywords = ['trump', 'angry', 'government'];
 }
 
 function createCanvas() {
@@ -75,10 +75,10 @@ function createCanvas() {
     var BB = gCanvas.getBoundingClientRect();
     offsetX = BB.left;
     offsetY = BB.top;
-    
+
     dragAndDropTouchStart();
-    
-    
+
+
 }
 
 // function checkMobile() {
@@ -408,20 +408,20 @@ function dragAndDropTouchStart() {
     var hammertouch = new Hammer(gCanvas);
 
     hammertouch.on('tap', function (e) {
-        
+
         if (e.pointerType === 'mouse') return;
 
         var offsetX = e.srcEvent.offsetX;
         var offsetY = e.srcEvent.offsetY;
-        console.log('offsetX:',offsetX);
-        console.log('offsetY:',offsetY);
-        
+        console.log('offsetX:', offsetX);
+        console.log('offsetY:', offsetY);
+
         gMeme.lines.forEach((line, idx) => {
             var positions = getPositionRecMark(line);
-            console.log('positions',positions);
-            
+            console.log('positions', positions);
+
             if (offsetX > positions.xPos && offsetX < positions.xPos + positions.width
-                 && offsetY > positions.yPos && offsetY < positions.yPos + positions.height) {
+                && offsetY > positions.yPos && offsetY < positions.yPos + positions.height) {
                 gMeme.selectedLineIdx = idx;
                 drawImg();
             }
@@ -435,6 +435,17 @@ function dragAndDropTouchStart() {
         var offsetX = e.srcEvent.offsetX;
         var offsetY = e.srcEvent.offsetY;
 
+
+        gMeme.lines.forEach((line, idx) => {
+            var positions = getPositionRecMark(line);
+            console.log('positions', positions);
+
+            if (offsetX > positions.xPos && offsetX < positions.xPos + positions.width
+                && offsetY > positions.yPos && offsetY < positions.yPos + positions.height) {
+                gMeme.selectedLineIdx = idx;
+                drawImg();
+            }
+        });
         var line = getDetailsLine();
         var posRect = getPositionRecMark(line);
 
