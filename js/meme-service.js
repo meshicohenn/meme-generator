@@ -81,12 +81,6 @@ function createCanvas() {
 
 }
 
-// function checkMobile() {
-//     if (window.outerWidth < 660) {
-//         return true;
-//     }
-// }
-
 function clearMark() {
     gIsDownload = true;
     drawImg();
@@ -195,8 +189,7 @@ function changeAlign(align) {
 }
 
 function changeFontFamely(font) {
-    console.log(font);
-    console.log(line);
+   
     var line = getDetailsLine(font);
     line.font = font;
 }
@@ -235,7 +228,7 @@ function drawText(line) {
     gCtx.beginPath();
     gCtx.strokeStyle = line.bordercolor;
     gCtx.fillStyle = line.color;
-    gCtx.font = `${line.size}` + 'px ' + `${line.font}`;;
+    gCtx.font = `${line.size}` + 'px ' + `${line.font}`;
     gCtx.lineWidth = line.border;
     gCtx.fillText(line.txt, x, y);
     gCtx.strokeText(line.txt, x, y);
@@ -248,12 +241,13 @@ function strokeFrameText() {
         var positions = getPositionRecMark();
         setRectMarkText(positions.xPos, positions.yPos, positions.width, positions.height);
     }
-
     gCtx.beginPath()
-    gCtx.strokeStyle = 'black';
-    gCtx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+    gCtx.fillStyle = 'rgba(109, 82, 233, 0.20)';
+    gCtx.lineWidth = 1
+    gCtx.rect(rect.x, rect.y, rect.width, rect.height);
+    gCtx.stroke();
+    gCtx.fill();
     gCtx.closePath()
-
 }
 
 function getPositionRecMark(line) {
@@ -262,8 +256,15 @@ function getPositionRecMark(line) {
     }
     var x = line.offsetX;
     var y = line.offsetY;
+    gCtx.font = `${line.size}` + 'px ' + `${line.font}`;
     var width = gCtx.measureText(line.txt).width + 8;
     var height = parseInt(gCtx.font) * 1.286;
+
+    console.log(line.txt);
+    
+    console.log('witdh',width);
+    console.log('height',height);
+    
     var xPos = x - 4;
     var yPos = y - (height / 1.3);
     return { xPos, yPos, width, height };
@@ -413,8 +414,6 @@ function dragAndDropTouchStart() {
 
         var offsetX = e.srcEvent.offsetX;
         var offsetY = e.srcEvent.offsetY;
-        console.log('offsetX:', offsetX);
-        console.log('offsetY:', offsetY);
 
         gMeme.lines.forEach((line, idx) => {
             var positions = getPositionRecMark(line);
@@ -438,7 +437,6 @@ function dragAndDropTouchStart() {
 
         gMeme.lines.forEach((line, idx) => {
             var positions = getPositionRecMark(line);
-            console.log('positions', positions);
 
             if (offsetX > positions.xPos && offsetX < positions.xPos + positions.width
                 && offsetY > positions.yPos && offsetY < positions.yPos + positions.height) {
