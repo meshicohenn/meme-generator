@@ -5,7 +5,6 @@ var gImgId;
 function onInit() {
     createGallery();
     renderGalleryPage();
-    // renderGallery();
 }
 
 function renderGalleryPage() {
@@ -14,7 +13,6 @@ function renderGalleryPage() {
 }
 
 function renderGallery() {
-
     var imgs = getImgs();
     var strHTML = imgs.map((img) => `<img class="meme-img" src="${img.url}" onclick="onSelectImg(${img.id})">`);
     document.querySelector('.photo-gallery').innerHTML = strHTML.join('');
@@ -36,7 +34,6 @@ function drawImg(url) {
         var url = gCurrentUrl;
     }
     img.src = url;
-    // debugger
     img.onload = () => {
         gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height) //img,x,y,width,height
         gMeme.lines.forEach((line) => {
@@ -61,7 +58,7 @@ function onChangeAlign(align) {
     renderCanvasText();
 }
 
-function onChangeFontFamely(font) {
+function onChangeFontFamely() {
     var elFont = document.querySelector('.font-list');
     changeFontFamely(elFont.value);
     renderCanvasText();
@@ -74,15 +71,12 @@ function onAddText() {
 }
 
 function onChangeText(text) {
-
     changeText(text);
-
     renderCanvasText();
 }
 
 function onChangeFontSize(diff) {
-    // if(validateLimitsOfCanvas()) return;
-    ChangeFontSize(diff);
+    changeFontSize(diff);
     renderCanvasText();
 }
 
@@ -135,7 +129,6 @@ function backToGallery() {
 }
 
 function onSearch(value) {
-    // debugger
     filterBy(value);
     renderGallery();
 }
@@ -174,10 +167,7 @@ function onUpload(ev) {
 
 function loadImageFromInput(ev, onImageReady) {
     var reader = new FileReader();
-    
-    reader.onload = function (event) {
-        console.log('hii');
-        
+    reader.onload = function (event) {        
         onImageReady(event.target.result)
     }
     reader.readAsDataURL(ev.target.files[0]);
