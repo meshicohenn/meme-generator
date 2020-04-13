@@ -1,20 +1,11 @@
 'use strict'
 const SIZE = 25;
 
-
-var gKeywords = {
-    'happy': 12,
-    'funny puk': 1
-}
-
 var gImgs = Array(SIZE).fill({});
 var gImgsAfterFilter = [];
 var gMark = {};
 
-var gIsDownload = false;
 var gMeme = {};
-var gCtx;
-var gCanvas;
 var gCurrentUrl;
 var gMemsToStorage;
 var gIsFilterOn = false;
@@ -26,8 +17,6 @@ var startY;
 var offsetX;
 var offsetY;
 
-//drag&drop for mobile
-
 
 function filterBy(key) {
     if (!key) {
@@ -37,7 +26,6 @@ function filterBy(key) {
     gImgsAfterFilter = gImgs.filter((img) => {
         if (img.keywords.includes(key)) return img;
     });
-
 }
 
 function addDatakeywords() {
@@ -66,18 +54,6 @@ function addDatakeywords() {
     gImgs[22].keywords = ['brown'];
     gImgs[23].keywords = ['brown'];
     gImgs[24].keywords = ['trump', 'angry', 'government'];
-}
-
-//gCtx+canvas --> controller
-function createCanvas() {
-    gCanvas = document.querySelector('#my-canvas');
-    gCtx = gCanvas.getContext('2d');
-    //drag&drop --> move to mouseEvent
-    var BB = gCanvas.getBoundingClientRect();
-    offsetX = BB.left;
-    offsetY = BB.top;
-    //drag&drop --> hammer
-    dragAndDropTouchStart();
 }
 
 function clearMark() {
@@ -150,10 +126,6 @@ function changeFontSize(diff) {
 }
 
 function changeText(text) {
-
-    // if (validateLimitsOfCanvas(text)) {
-    //     return console.log('cannot changing text');
-    // }
     var line = getDetailsLine();
     line.txt = text;
 }
@@ -178,7 +150,7 @@ function changeAlign(align) {
             line.offsetX = gCanvas.width / 2 - (widthTxt / 2);
             break;
         case 'right':
-            line.offsetX = gCanvas.width - 10 - gCtx.measureText(line.txt).width;
+            line.offsetX = gCanvas.width - 10 - widthTxt;
         default:
             break;
     }
@@ -216,53 +188,6 @@ function deleteLineCanvas() {
     }
 }
 
-//contoller
-function drawText(line) {
-    var x = line.offsetX;
-    var y = line.offsetY;
-
-    gCtx.beginPath();
-    gCtx.strokeStyle = line.bordercolor;
-    gCtx.fillStyle = line.color;
-    gCtx.font = `${line.size}` + 'px ' + `${line.font}`;
-    gCtx.lineWidth = line.border;
-    gCtx.fillText(line.txt, x, y);
-    gCtx.strokeText(line.txt, x, y);
-    gCtx.closePath();
-}
-
-//contoller
-function strokeFrameText() {
-    //only if is moved!! update the positions in gMark
-    if (!gIsDrag) {
-        var positions = getPositionRecMark();
-        setRectMarkText(positions.xPos, positions.yPos, positions.width, positions.height);
-    }
-    gCtx.beginPath()
-    gCtx.fillStyle = 'rgba(109, 82, 233, 0.20)';
-    gCtx.lineWidth = 1
-    gCtx.rect(gMark.x, gMark.y, gMark.width, gMark.height);
-    gCtx.stroke();
-    gCtx.fill();
-    gCtx.closePath()
-}
-
-//contoller
-function getPositionRecMark(line) {
-    if (!line) {
-        var line = getDetailsLine();
-    }
-    var x = line.offsetX;
-    var y = line.offsetY;
-
-    gCtx.font = `${line.size}` + 'px ' + `${line.font}`;
-    var width = gCtx.measureText(line.txt).width + 8;
-    var height = parseInt(gCtx.font) * 1.286;
-    var xPos = x - 4;
-    var yPos = y - (height / 1.3);
-    return { xPos, yPos, width, height };
-}
-
 function setRectMarkText(x, y, width, height) {
     gMark = {
         x: x,
@@ -273,29 +198,8 @@ function setRectMarkText(x, y, width, height) {
     }
 }
 
-// function validateLimitsOfCanvas(text) {
-//     var txt;
-//     var line = getDetailsLine();
-//     // if(!line) return;
-//     (text) ? txt = text : txt = line.txt;
-//     var x = line.offsetX;
-//     if (x + gCtx.measureText(txt).width - 5 > gCanvas.width) {
-//         console.log('your text is too long');
-//         return true;
-//     }
-//     return false;
-// }
-
-function downloadImg(elLink) {
-    var imgContent = gCanvas.toDataURL();
-
-    elLink.href = imgContent
-    gIsDownload = false;
-    drawImg();
-}
-
-function serviceSaveToStorage() {
-    var imgContent = gCanvas.toDataURL();
+function serviceSaveToStorage(canvas) {
+    var imgContent = canvas.toDataURL();
 
     var mems = loadFromStorage('mems');
     if (!mems) mems = [];
@@ -307,6 +211,9 @@ function serviceSaveToStorage() {
 //drag&drop
 function dragAndDropMouseDown(ev) {
     // tell the browser we're handling this mouse event
+    offsetX = gCanvas.offsetLeft;
+    offsetY =  gCanvas.offsetTop;
+
     ev.preventDefault();
     ev.stopPropagation();
 
@@ -380,23 +287,22 @@ function markCurrText(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    //T.D - change val
-    var mx = parseInt(e.clientX - offsetX);
-    var my = parseInt(e.clientY - offsetY);
+    var mouseX = parseInt(e.clientX - offsetX);
+    var mouseY = parseInt(e.clientY - offsetY);
 
     // var line = getDetailsLine();
     gMeme.lines.forEach((line, idx) => {
 
         var positions = getPositionRecMark(line);
         // debugger
-        if (mx > positions.xPos && mx < positions.xPos + positions.width && my > positions.yPos && my < positions.yPos + positions.height) {
+        if (mouseX > positions.xPos && mouseX < positions.xPos + positions.width && mouseY > positions.yPos && mouseY < positions.yPos + positions.height) {
             gMeme.selectedLineIdx = idx;
             drawImg();
         }
     })
 }
 
-//drag for mobile
+//drag for 
 function dragAndDropTouchStart() {
     var hammertouch = new Hammer(gCanvas);
 
@@ -443,3 +349,16 @@ function dragAndDropTouchStart() {
     });
 }
 
+
+// function validateLimitsOfCanvas(text) {
+//     var txt;
+//     var line = getDetailsLine();
+//     // if(!line) return;
+//     (text) ? txt = text : txt = line.txt;
+//     var x = line.offsetX;
+//     if (x + gCtx.measureText(txt).width - 5 > gCanvas.width) {
+//         console.log('your text is too long');
+//         return true;
+//     }
+//     return false;
+// }

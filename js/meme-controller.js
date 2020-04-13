@@ -1,10 +1,24 @@
 'use strict'
 
 var gImgId;
+var gCtx;
+var gCanvas;
+var gIsDownload = false;
 
 function onInit() {
     createGallery();
     renderGalleryPage();
+}
+
+function createCanvas() {
+    gCanvas = document.querySelector('#my-canvas');
+    gCtx = gCanvas.getContext('2d');
+    //drag&drop --> move to mouseEvent
+    var BB = gCanvas.getBoundingClientRect();
+    offsetX = BB.left;
+    offsetY = BB.top;
+    //drag&drop --> hammer
+    dragAndDropTouchStart();
 }
 
 function renderGalleryPage() {
@@ -24,7 +38,6 @@ function renderCanvasPage() {
 }
 
 function renderCanvasText() {
-    // if(validateLimitsOfCanvas()) return;
     drawImg();
 }
 
@@ -43,14 +56,58 @@ function drawImg(url) {
     }
 }
 
+function drawText(line) {
+    var x = line.offsetX;
+    var y = line.offsetY;
+
+    gCtx.beginPath();
+    gCtx.strokeStyle = line.bordercolor;
+    gCtx.fillStyle = line.color;
+    gCtx.font = `${line.size}` + 'px ' + `${line.font}`;
+    gCtx.lineWidth = line.border;
+    gCtx.fillText(line.txt, x, y);
+    gCtx.strokeText(line.txt, x, y);
+    gCtx.closePath();
+}
+
+function strokeFrameText() {
+    //only if is not move!! update the positions in gMark
+    if (!gIsDrag) {
+        var positions = getPositionRecMark();
+        setRectMarkText(positions.xPos, positions.yPos, positions.width, positions.height);
+    }
+    gCtx.beginPath()
+    gCtx.fillStyle = 'rgba(109, 82, 233, 0.20)';
+    gCtx.lineWidth = 1
+    gCtx.rect(gMark.x, gMark.y, gMark.width, gMark.height);
+    gCtx.stroke();
+    gCtx.fill();
+    gCtx.closePath()
+}
+
+function getPositionRecMark(line) {
+    if (!line) {
+        var line = getDetailsLine();
+    }
+    var x = line.offsetX;
+    var y = line.offsetY;
+
+    gCtx.font = `${line.size}` + 'px ' + `${line.font}`;
+    var width = gCtx.measureText(line.txt).width + 8;
+    var height = parseInt(gCtx.font) * 1.286;
+    var xPos = x - 4;
+    var yPos = y - (height / 1.3);
+    return { xPos, yPos, width, height };
+}
+
 function onSelectImg(id) {
     setGlobalUrl(id);
     document.querySelector('.gallery').style.display = 'none';
-    renderCanvasPage();
     createCanvas();
     gImgId = id;
     createMeme(id);
     setGlobalUrl(id);
+    renderCanvasPage();
 }
 
 function onChangeAlign(align) {
@@ -114,12 +171,17 @@ function onDelete() {
     renderCanvasText();
 }
 
-function onDownload(elImg) {
-    downloadImg(elImg);
+function onDownload(elLink) {
+    var imgContent = gCanvas.toDataURL();
+    elLink.href = imgContent;
+    elLink.download = 'MyMeme.jpg'
+    // debugger
+    gIsDownload = false;
+    drawImg();
 }
 
 function onSaveCanvas() {
-    serviceSaveToStorage();
+    serviceSaveToStorage(gCanvas);
     document.querySelector('.modal').style.display = 'block';
 }
 
@@ -167,12 +229,12 @@ function onUpload(ev) {
 
 function loadImageFromInput(ev, onImageReady) {
     var reader = new FileReader();
-    reader.onload = function (event) {        
+    reader.onload = function (event) {
         onImageReady(event.target.result)
     }
     reader.readAsDataURL(ev.target.files[0]);
 }
 
-function onToggleMenu(){
+function onToggleMenu() {
     document.body.classList.toggle('menu-open');
 }
