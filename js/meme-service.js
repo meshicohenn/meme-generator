@@ -1,5 +1,5 @@
 'use strict'
-const SIZE = 18;
+const SIZE = 25;
 
 
 var gKeywords = {
@@ -59,6 +59,13 @@ function addDatakeywords() {
     gImgs[15].keywords = ['moviw', 'red'];
     gImgs[16].keywords = ['putin', 'angry', 'government', 'red'];
     gImgs[17].keywords = ['toy-story', 'woddy', 'green', 'red'];
+    gImgs[18].keywords = ['dog', 'sweet', 'red'];
+    gImgs[19].keywords = ['blue'];
+    gImgs[20].keywords = ['blue'];
+    gImgs[21].keywords = ['red'];
+    gImgs[22].keywords = ['brown'];
+    gImgs[23].keywords = ['brown'];
+    gImgs[24].keywords =  ['trump', 'angry', 'government'];
 }
 
 function createCanvas() {
@@ -71,6 +78,7 @@ function createCanvas() {
     
     dragAndDropTouchStart();
     
+    
 }
 
 // function checkMobile() {
@@ -82,22 +90,6 @@ function createCanvas() {
 function clearMark() {
     gIsDownload = true;
     drawImg();
-}
-
-function drawImg(url) {
-    var img = new Image();
-    if (!url) {
-        var url = gCurrentUrl;
-    }
-    img.src = url;
-    // debugger
-    img.onload = () => {
-        gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height) //img,x,y,width,height
-        gMeme.lines.forEach((line) => {
-            drawText(line);
-        });
-        if (!gIsDownload) strokeFrameText();
-    }
 }
 
 function getImgs() {
@@ -415,20 +407,29 @@ function markCurrText(e) {
 function dragAndDropTouchStart() {
     var hammertouch = new Hammer(gCanvas);
 
-    hammertouch.on('press', function (e) {
+    hammertouch.on('tap', function (e) {
+        
         if (e.pointerType === 'mouse') return;
 
         var offsetX = e.srcEvent.offsetX;
         var offsetY = e.srcEvent.offsetY;
+        console.log('offsetX:',offsetX);
+        console.log('offsetY:',offsetY);
+        
         gMeme.lines.forEach((line, idx) => {
             var positions = getPositionRecMark(line);
-            if (offsetX > positions.xPos && offsetX < positions.xPos + positions.width && offsetY > positions.yPos && offsetY < positions.yPos + positions.height) {
+            console.log('positions',positions);
+            
+            if (offsetX > positions.xPos && offsetX < positions.xPos + positions.width
+                 && offsetY > positions.yPos && offsetY < positions.yPos + positions.height) {
                 gMeme.selectedLineIdx = idx;
                 drawImg();
             }
         });
     });
     hammertouch.on('pan', function (e) {
+        // e.stopPropagation();
+
         if (e.pointerType === 'mouse') return;
 
         var offsetX = e.srcEvent.offsetX;

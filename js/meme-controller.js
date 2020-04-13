@@ -30,6 +30,22 @@ function renderCanvasText() {
     drawImg();
 }
 
+function drawImg(url) {
+    var img = new Image();
+    if (!url) {
+        var url = gCurrentUrl;
+    }
+    img.src = url;
+    // debugger
+    img.onload = () => {
+        gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height) //img,x,y,width,height
+        gMeme.lines.forEach((line) => {
+            drawText(line);
+        });
+        if (!gIsDownload) strokeFrameText();
+    }
+}
+
 function onSelectImg(id) {
     setGlobalUrl(id);
     document.querySelector('.gallery').style.display = 'none';
@@ -165,4 +181,8 @@ function loadImageFromInput(ev, onImageReady) {
         onImageReady(event.target.result)
     }
     reader.readAsDataURL(ev.target.files[0]);
+}
+
+function onToggleMenu(){
+    document.body.classList.toggle('menu-open');
 }

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/main.css">
+    <script src="https://kit.fontawesome.com/ce3f5fb62e.js" crossorigin="anonymous"></script>
+    <script src="lib/hammerjs.js"></script>
     <title>my-mems</title>
 </head>
 
@@ -18,11 +20,17 @@
                     <span class="first-letter">G</span><span>enerator</span>
                     <span class="point-letter">.</span>
                 </div>
-                <ul class="main-nav flex space-between clean-list">
+                <ul class="main-nav flex clean-list">
+                    <li class="quit-menu"><button onclick="onToggleMenu()">
+                            <i class="close-btn far fa-times-circle"></i>
+                        </button></li>
                     <li><a href="index.html">Gallery</a></li>
                     <li><a href="my-mems.html">Mems</a></li>
                     <li><a href="#">About</a></li>
                 </ul>
+                <button onclick="onToggleMenu()" class="btn-menu">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </header>
         <main class="main-content flex justify-center">

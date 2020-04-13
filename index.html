@@ -12,6 +12,9 @@
 </head>
 
 <body onload="onInit()">
+
+    <section class="screen" onclick="onToggleMenu()"></section>
+
     <header class="main-header flex ">
         <div class="nav-container flex align-center space-between">
             <div class="logo">
@@ -19,11 +22,17 @@
                 <span class="first-letter">G</span><span>enerator</span>
                 <span class="point-letter">.</span>
             </div>
-            <ul class="main-nav flex space-between clean-list">
+            <ul class="main-nav flex clean-list">
+                <li class="quit-menu"><button onclick="onToggleMenu()">
+                        <i class="close-btn far fa-times-circle"></i>
+                    </button></li>
                 <li><a href="index.html">Gallery</a></li>
                 <li><a href="my-mems.html">Mems</a></li>
                 <li><a href="#">About</a></li>
             </ul>
+            <button onclick="onToggleMenu()" class="btn-menu">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
     <main class="main-content flex justify-center">
@@ -76,7 +85,8 @@
             <div class="canvas-and-img-container flex align-center justify-center">
                 <div class="canvas-container">
                     <canvas id="my-canvas" height="400" width="400" onmousedown="onMouseDown(event)"
-                        onmouseup="onMouseUp(event)" onmousemove="onMouseMove(event)"></canvas>
+                        onmouseup="onMouseUp(event)" onmousemove="onMouseMove(event)"
+                         ontouchmove="event.preventDefault()"></canvas>
                 </div>
                 <div class="tools-container flex flex-column align-center justify-center wrap">
                     <input type="text" id="text" class="txt-input" placeholder="what on your mind?"
